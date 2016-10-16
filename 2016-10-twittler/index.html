@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="jquery.js"></script>
-    <script src="data_generator.js"></script>
-  </head>
-  <body>
-    <script>
+  <head>
+    <script src="jquery.js"></script>
+    <script src="data_generator.js"></script>
+  </head>
+  <body>
+    <button id="newTweet">
+      <input type="button" value="Generate New Tweet">
+    </button>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+    <script>
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
-      });
+      $(document).ready(function(){
+        var $body = $('body');
 
-    </script>
-  </body>
+        var addNew = function(){
+          var index = streams.home.length - 1;
+          var tweet = streams.home[index];
+          var $tweet = $('<div></div>');
+          var users = '@' + '<a href= #>' + tweet.user + '</a>'
+          $tweet.html(users + ': ' + tweet.message).appendTo($body);
+          var $time = $('<div></div>');
+          $time.text('Tweet created at ' + tweet.created_at).appendTo($body);
+
+          $tweet.on('click', 'a', function(){
+
+            for(var i = 0; i < streams.users[tweet.user].length; i++){
+              var $timeline = $('<div></div>');
+              $timeline.text(streams.users[tweet.user][i].message).appendTo($body);
+            }
+          })
+        }
+
+        $( "#newTweet" ).on('click', function () {
+          var visitor = "Fiona";
+          addNew();
+        });
+
+      });
+
+    </script>
+  </body>
 </html>
